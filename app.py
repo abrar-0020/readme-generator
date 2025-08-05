@@ -41,7 +41,8 @@ Explain how to run or use the project here.
 Pull requests are welcome. For major changes, please open an issue first.
 
 ## 📄 License
-{repo_data.get('license', {}).get('name', 'Not specified')}
+{repo_data['license']['name'] if repo_data.get('license') else 'Not specified'}
+
 """
         return readme_content, None
     except Exception as e:
