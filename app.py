@@ -1,10 +1,15 @@
 import requests
 import streamlit as st
 import os
+from dotenv import load_dotenv
 
+load_dotenv()
+token = os.getenv("GITHUB_TOKEN")
+
+headers = {"Authorization": f"token {token}"}
 st.title("📝 Auto README Generator from GitHub URL")
 
-GITHUB_API = "GITHUB_API"
+GITHUB_API = "https://api.github.com/repos"
 
 def get_repo_info(repo_url, token=None):
     try:
