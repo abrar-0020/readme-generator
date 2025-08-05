@@ -3,10 +3,10 @@ import streamlit as st
 import os
 from dotenv import load_dotenv
 
+# Load token from .env file if available
 load_dotenv()
-token = os.getenv("GITHUB_TOKEN")
+default_token = os.getenv("GITHUB_TOKEN")
 
-headers = {"Authorization": f"token {token}"}
 st.title("📝 Auto README Generator from GitHub URL")
 
 GITHUB_API = "https://api.github.com/repos"
@@ -33,9 +33,6 @@ def get_repo_info(repo_url, token=None):
 
 ## 📦 Installation
 Clone the repository:
-```
-git clone {repo_data['html_url']}
-```
 
 ## 🚀 Usage
 Explain how to run or use the project here.
@@ -50,12 +47,16 @@ Pull requests are welcome. For major changes, please open an issue first.
     except Exception as e:
         return None, str(e)
 
+# UI input
 repo_url = st.text_input("Enter GitHub Repository URL")
-token = st.text_input("Enter GitHub Token (Optional)", type="password")
+user_token = st.text_input("Enter GitHub Token (Optional)", type="password")
+
+# Use user token if provided, else fallback to .env
+active_token = user_token if user_token else default_token
 
 if st.button("Generate README"):
     if repo_url:
-        readme, error = get_repo_info(repo_url, token)
+        readme, error = get_repo_info(repo_url, active_token)
         if error:
             st.error(error)
         else:
